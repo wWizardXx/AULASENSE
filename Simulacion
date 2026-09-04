@@ -1,1 +1,92 @@
+// =========================
+// ULTRASONICO - SIMULACION
+// =========================
+const int trigPin = 16;
+const int echoPin = 17;
 
+// =========================
+// LED RGB
+// =========================
+const int rojo = 25;
+const int verde = 26;
+const int azul = 33;
+
+
+void setup() {
+
+  Serial.begin(115200);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  pinMode(rojo, OUTPUT);
+  pinMode(verde, OUTPUT);
+  pinMode(azul, OUTPUT);
+
+  digitalWrite(trigPin, LOW);
+
+  Serial.println("Ultrasonico - simulacion de microfono");
+}
+
+
+void loop() {
+
+  // Enviar pulso
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(trigPin, LOW);
+
+  // Recibir eco
+  long duracion = pulseIn(echoPin, HIGH);
+
+  // Calcular distancia
+  float distancia = duracion * 0.0343 / 2;
+
+  Serial.print("Distancia: ");
+  Serial.print(distancia);
+  Serial.println(" cm");
+
+
+  // =========================
+  // SIMULACION DE SONIDO
+  // =========================
+
+  if (distancia <= 10) {
+
+    // SONIDO FUERTE
+    digitalWrite(rojo, HIGH);
+    digitalWrite(verde, LOW);
+    digitalWrite(azul, LOW);
+
+    Serial.println("Nivel de sonido: FUERTE");
+
+  }
+
+  else if (distancia <= 30) {
+
+    // SONIDO MEDIO
+    digitalWrite(rojo, LOW);
+    digitalWrite(verde, HIGH);
+    digitalWrite(azul, LOW);
+
+    Serial.println("Nivel de sonido: MEDIO");
+
+  }
+
+  else {
+
+    // SONIDO BAJO
+    digitalWrite(rojo, LOW);
+    digitalWrite(verde, LOW);
+    digitalWrite(azul, HIGH);
+
+    Serial.println("Nivel de sonido: BAJO");
+  }
+
+
+  delay(300);
+}
